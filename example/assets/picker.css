@@ -12,7 +12,7 @@
   border-radius: 2px;
   overflow: hidden;
   position: relative;
-  box-shadow: 0 0 0 1px rgba(0,0,0,0.1), 0 2px 15px rgba(0,0,0,0.1);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1), 0 2px 15px rgba(0, 0, 0, 0.1);
 }
 
 .emoji-dialog .emojione {
@@ -21,7 +21,7 @@
 
 .emoji-dialog .emoji-dialog-header {
   padding: 0 10px;
-  background-color: #F5F7F9;
+  background-color: #f5f7f9;
 }
 
 .emoji-dialog .emoji-dialog-header ul {
@@ -58,7 +58,7 @@
 .emoji-dialog .emoji-row {
   box-sizing: border-box;
   overflow-y: hidden;
-  padding-left: 10px
+  padding-left: 10px;
 }
 
 .emoji-dialog .emoji-row .emoji {
@@ -116,7 +116,7 @@
 }
 
 .emoji-dialog .modifiers .modifier.active::after {
-  content: "";
+  content: '';
   display: block;
   position: absolute;
   width: 7px;
@@ -157,13 +157,12 @@
   right: 0;
 }
 
-.emoji-dialog .emoji-search-wrapper +
-.emoji-categories-wrapper {
+.emoji-dialog .emoji-search-wrapper + .emoji-categories-wrapper {
   top: 83px;
 }
 
 .emoji-dialog .emoji-row .emoji:hover {
-  background: #F5F7F9;
+  background: #f5f7f9;
 }
 
 .emoji-dialog .emoji {

@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 /*
  * Local Import
  */
-import { Style, StyleMention } from './style';
+import { Chunk } from '../style';
 
 /*
  * Pattern
@@ -30,21 +30,20 @@ const Mention = ({
   const value = children.trim();
   const mention = value.slice(1);
 
-  /*
-   * If Mention match with my Name || 'question'
-   * Return StyleMention
-   */
+  // If the mention is matching with my username or '@question'
   if (isMentionMe(mention)) {
     onMentionMe(mention);
-    return <StyleMention>{value}</StyleMention>;
+    return (
+      <span style={{ ...Chunk, color: '#0ac3a7', padding: '0 .25em' }}>
+        {value}
+      </span>
+    );
   }
 
-  /*
-   * Otherwise, return basic Style
-   */
+  // Otherwise, it's just a basic mention
   if (isMention(mention)) {
     onMention(mention);
-    return <Style>{value}</Style>;
+    return <span style={{ color: '#0ac3a7' }}>{value}</span>;
   }
 
   return false;
