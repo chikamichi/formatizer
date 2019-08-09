@@ -17,26 +17,11 @@ export const patternItalic = /(\s|^)(_.+?_)(?=\s|$)/g;
 export const patternStrike = /(\s|^)(~.+?~)(?=\s|$)/g;
 
 /*
- * Style
- */
-const style = {
-  bold: {
-    fontWeight: 700,
-  },
-  italic: {
-    fontStyle: 'italic',
-  },
-  strike: {
-    textDecoration: 'line-through',
-  },
-};
-
-/*
  * TextFormat
  * Remove first and last character
  */
 // eslint-disable-next-line react/prop-types
-const create = (styleObj, pattern) => ({ children }) => {
+const create = (style, pattern) => ({ children }) => {
   const [, before, format] = pattern.exec(children);
 
   // Text
@@ -46,13 +31,16 @@ const create = (styleObj, pattern) => ({ children }) => {
   return (
     <span>
       {before && <Character>{before}</Character>}
-      <span style={styleObj}>
+      <span style={style}>
         <Format>{text}</Format>
       </span>
     </span>
   );
 };
 
-export const Bold = create(style.bold, patternBold);
-export const Italic = create(style.italic, patternItalic);
-export const Strike = create(style.strike, patternStrike);
+/*
+ * Export
+ */
+export const Bold = create({ fontWeight: 700 }, patternBold);
+export const Italic = create({ fontStyle: 'italic' }, patternItalic);
+export const Strike = create({ textDecoration: 'line-through' }, patternStrike);
