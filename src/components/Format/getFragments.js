@@ -1,3 +1,4 @@
+/* eslint-disable no-cond-assign */
 /*
  * Package Import
  */
@@ -11,6 +12,18 @@ import allReplacements from './replacements';
 /*
  * Code
  */
+
+const checkAndMatch = (message, props, repl) => {
+  let matches = null;
+  let checkedMatch = null;
+  while ((matches = repl.pattern.exec(message)) !== null) {
+    if (!repl.check || repl.check({ props, match: matches[0] })) {
+      checkedMatch = matches;
+    }
+  }
+
+  return checkedMatch;
+};
 /* eslint-disable no-use-before-define */
 /**
  * Split message into an array for a given pattern
@@ -21,39 +34,25 @@ import allReplacements from './replacements';
  * @param  {Object} props       User land props
  * @return {Array}              Array of fragments (string or React element)
  */
-const splitMessage = ({ message, pattern, check, Component, props }) => {
+const splitMessage = ({ message, Component, props, winnerMatch }) => {
   const subFragments = [];
-  const matches = message.match(pattern);
 
-  // For each match, take begin, replace match by fragment, and continue
-  if (matches) {
-    const match = matches[0];
-    const indexBegin = message.indexOf(match);
-    const indexEnd = indexBegin + match.length;
-    const messageBegin = message.slice(0, indexBegin);
-    const messageEnd = message.slice(indexEnd);
+  const indexBegin = winnerMatch.index;
+  const indexEnd = indexBegin + winnerMatch[0].length;
+  const messageBegin = message.slice(0, indexBegin);
+  const messageEnd = message.slice(indexEnd);
 
-    // If there is no check, or check passes:
-    // push the text before + component for the match
-    if (!check || check({ match, props })) {
-      // Begin
-      if (messageBegin !== '') {
-        subFragments.push(messageBegin);
-      }
+  // Begin
+  if (messageBegin !== '') {
+    subFragments.push(messageBegin);
+  }
 
-      // Fragment
-      subFragments.push(<Component {...props}>{match}</Component>);
+  // Fragment
+  subFragments.push(<Component {...props}>{winnerMatch[0]}</Component>);
 
-      // End
-      if (messageEnd !== '') {
-        subFragments.push(messageEnd);
-      }
-    }
-    else {
-      // If there is a check, but it does not pass
-      // push the text before and the matching text without any component
-      subFragments.push(message);
-    }
+  // End
+  if (messageEnd !== '') {
+    subFragments.push(messageEnd);
   }
 
   return subFragments;
@@ -70,31 +69,34 @@ const getSubFragments = ({ message, replacement: strOrArray, props }) => {
   const replacement = Array.isArray(strOrArray) ? strOrArray : [strOrArray];
 
   // Which pattern is going to fire first?
-  let winner;
+  let winnerRepl;
   let winnerIndex = Infinity;
+  let winnerMatch;
   replacement.forEach((repl) => {
     // Never forget to reset lastIndex after a .exec()
-    const matches = repl.pattern.exec(message);
+    const matches = checkAndMatch(message, props, repl);
     repl.pattern.lastIndex = 0;
     if (
       // Found
       matches &&
       // Valid
-      (!repl.check || repl.check({ props, match: matches[0] })) &&
+      // (!repl.check || repl.check({ props, match: matches[0] })) &&
       // Lower index
       matches.index < winnerIndex
     ) {
       winnerIndex = matches.index;
-      winner = repl;
+      winnerRepl = repl;
+      winnerMatch = matches;
     }
   });
 
   // If there is a winner, split baby!
-  if (winner) {
+  if (winnerRepl && winnerMatch) {
     const fragments = splitMessage({
       message,
       props,
-      ...winner,
+      winnerMatch,
+      ...winnerRepl,
     });
 
     // After winner, rince and repeat. Until there is no winner!
