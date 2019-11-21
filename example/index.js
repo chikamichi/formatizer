@@ -17,10 +17,17 @@ import {
   isTeacher,
 } from './utils';
 
+// Assets
+import emojione from './assets/images/common/emojione.svg';
+
+// Style
+import './styles/picker.css';
+import './styles/style.css';
+
 /*
  * Setup
  */
-setImagePath('/images/common/emojione.svg');
+setImagePath(emojione);
 
 /*
  * Component

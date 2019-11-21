@@ -8,10 +8,8 @@
   "author": "Alexandre Bourdeaud'hui <alexandre@oclock.io>",
   "license": "MIT",
   "scripts": {
-    "start": "brunch watch --server",
-    "build": "babel src -d dist",
-    "start:w": "NODE_ENV=development webpack-dev-server",
-    "build:w": "NODE_ENV=production webpack",
+    "start": "NODE_ENV=development webpack-dev-server",
+    "build": "NODE_ENV=production webpack",
     "test": "test(){ if [ -z $1 ]; then mocha tests/.setup.js 'tests/**/*.test.js'; else mocha tests/.setup.js $1 $2; fi; }; test",
     "lint": "eslint --fix '{example,src,tests}/**/*.{js,json}'",
     "pretty": "prettier --write '{example,src,tests}/**/*.{js,json}'",
@@ -67,13 +65,14 @@
     "react": "^15.6.2",
     "react-dom": "^15.6.2",
     "react-test-renderer": "^15.6.2",
-    "uglifyjs-webpack-plugin": "^2.2.0",
+    "url-loader": "^2.2.0",
     "webpack": "^4.39.1",
     "webpack-bundle-analyzer": "^3.4.1",
     "webpack-cli": "^3.3.6",
-    "webpack-dev-server": "^3.8.0"
+    "webpack-dev-server": "^3.8.0",
+    "webpack-node-externals": "^1.7.2"
   },
-  "main": "dist/index.js",
+  "main": "dist/main.js",
   "files": [
     "README.md",
     "dist",
